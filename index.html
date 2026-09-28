@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Agent / Chain Evidence Tools — read-only diagnostics for AI agents on Web3</title>
+<meta name="description" content="CLI-first, read-only evidence and diagnostics tools for AI agents and Web3: MCP discovery (mcpdoctor), MCP OAuth (oauthdoctor), x402 payment challenges (x402-reconcile), Solana transactions (wallet-evidence), cross-chain incidents (crosschain-incident), and ReceiptRail on-chain delivery receipts.">
+<meta property="og:title" content="Agent / Chain Evidence Tools">
+<meta property="og:description" content="Read-only, no-keys, no-payments diagnostics CLIs for AI agents on Web3. PASS / FAIL / UNKNOWN, JSON output, every limit documented.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://agenttoll-evidence-tools.app.workbuddy.host/">
+<link rel="canonical" href="https://agenttoll-evidence-tools.app.workbuddy.host/">
+<meta name="robots" content="index,follow">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  "name": "Agent / Chain Evidence Tools",
+  "description": "Read-only CLI diagnostics for AI agents and Web3 payments",
+  "author": { "@type": "Person", "name": "Eidon", "url": "https://github.com/xka0085-byte" },
+  "hasPart": [
+    { "@type": "SoftwareApplication", "name": "mcpdoctor", "applicationCategory": "DeveloperApplication", "operatingSystem": "Node.js" },
+    { "@type": "SoftwareApplication", "name": "oauthdoctor", "applicationCategory": "DeveloperApplication", "operatingSystem": "Node.js" },
+    { "@type": "SoftwareApplication", "name": "x402-reconcile", "applicationCategory": "DeveloperApplication", "operatingSystem": "Node.js" },
+    { "@type": "SoftwareApplication", "name": "wallet-evidence", "applicationCategory": "DeveloperApplication", "operatingSystem": "Node.js" },
+    { "@type": "SoftwareApplication", "name": "crosschain-incident", "applicationCategory": "DeveloperApplication", "operatingSystem": "Node.js" }
+  ]
+}
+</script>
+<style>
+  :root { --bg:#0d1117; --card:#161b22; --border:#30363d; --text:#e6edf3; --dim:#8b949e; --green:#3fb950; --yellow:#d29922; --blue:#58a6ff; --accent:#f78166; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font: 16px/1.6 -apple-system, "Segoe UI", Roboto, sans-serif; padding: 48px 20px; }
+  .wrap { max-width: 920px; margin: 0 auto; }
+  h1 { font-size: 28px; margin-bottom: 8px; }
+  .tagline { color: var(--dim); margin-bottom: 28px; font-size: 17px; }
+  .tagline code { color: var(--green); }
+  .principles { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 32px; }
+  .principles span { background: var(--card); border: 1px solid var(--border); border-radius: 20px; padding: 4px 14px; font-size: 13px; color: var(--dim); }
+  .grid { display: grid; gap: 16px; }
+  .card { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 20px 22px; }
+  .card h2 { font-size: 18px; display: flex; align-items: center; gap: 10px; margin-bottom: 6px; }
+  .badge { font-size: 11px; font-weight: 600; border-radius: 12px; padding: 2px 10px; letter-spacing: .3px; }
+  .b-verified { background: rgba(63,185,80,.15); color: var(--green); border: 1px solid rgba(63,185,80,.4); }
+  .b-mvp { background: rgba(210,153,34,.15); color: var(--yellow); border: 1px solid rgba(210,153,34,.4); }
+  .card p { color: var(--dim); font-size: 14.5px; margin-bottom: 10px; }
+  .cmd { font-family: ui-monospace, Consolas, monospace; font-size: 13px; background: #0d1117; border: 1px solid var(--border); border-radius: 6px; padding: 8px 12px; color: var(--green); overflow-x: auto; white-space: nowrap; margin-bottom: 10px; }
+  .links a { color: var(--blue); text-decoration: none; font-size: 13.5px; margin-right: 16px; }
+  .links a:hover { text-decoration: underline; }
+  footer { margin-top: 36px; color: var(--dim); font-size: 13.5px; border-top: 1px solid var(--border); padding-top: 20px; }
+  footer a { color: var(--blue); }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Agent / Chain Evidence Tools</h1>
+  <p class="tagline">Read-only diagnostics for AI agents and Web3 payments. Every command answers one question with <code>PASS / FAIL / UNKNOWN</code> — and documents what it does <em>not</em> cover.</p>
+
+  <div class="principles">
+    <span>CLI-first</span><span>read-only</span><span>no private keys</span><span>no auto-payments</span><span>JSON output</span><span>limits documented</span><span>MIT</span>
+  </div>
+
+  <div class="grid">
+    <div class="card">
+      <h2>mcpdoctor <span class="badge b-verified">MCP conformance: core verified</span></h2>
+      <p>Is your MCP/x402 endpoint discoverable and understandable by an agent? Checks HTTP 402 payment documents, MCP initialize, tools/list, tool name / description / inputSchema / required fields.</p>
+      <div class="cmd">npx mcpdoctor inspect https://your-endpoint/mcp --json</div>
+      <div class="links"><a href="https://github.com/xka0085-byte/mcp-doctor">GitHub</a><a href="https://www.npmjs.com/package/mcpdoctor">npm</a><a href="https://glama.ai/mcp/servers/xka0085-byte/agenttoll">Glama listing</a></div>
+    </div>
+
+    <div class="card">
+      <h2>x402-reconcile <span class="badge b-mvp">challenge inspector · MVP</span></h2>
+      <p>What does an x402 endpoint demand before serving? Parses HTTP 402 payment documents: scheme, network (CAIP-2), asset, amount, payTo — plus response latency and SHA-256 evidence. Never pays.</p>
+      <div class="cmd">npx x402-reconcile inspect https://api.example.com/paid --method=POST --json</div>
+      <div class="links"><a href="https://github.com/xka0085-byte/x402-reconcile">GitHub</a><a href="https://www.npmjs.com/package/x402-reconcile">npm</a></div>
+    </div>
+
+    <div class="card">
+      <h2>oauthdoctor <span class="badge b-mvp">discovery-only · experimental</span></h2>
+      <p>Does your MCP server advertise OAuth metadata an agent can actually discover? 401 challenge, WWW-Authenticate resource_metadata, Protected Resource Metadata, authorization server metadata, PKCE S256.</p>
+      <div class="cmd">npx oauthdoctor inspect https://mcp.example.com/mcp --json</div>
+      <div class="links"><a href="https://github.com/xka0085-byte/oauthdoctor">GitHub</a><a href="https://www.npmjs.com/package/oauthdoctor">npm</a></div>
+    </div>
+
+    <div class="card">
+      <h2>wallet-evidence <span class="badge b-mvp">single-RPC evidence · MVP</span></h2>
+      <p>Solana transaction evidence from one public RPC: slot, block time, execution error, parsed instructions, fee, response hash. If the RPC cannot see a transaction it says <strong>UNKNOWN</strong> — never "does not exist".</p>
+      <div class="cmd">npx wallet-evidence inspect &lt;signature&gt; --rpc=https://api.mainnet-beta.solana.com --json</div>
+      <div class="links"><a href="https://github.com/xka0085-byte/wallet-evidence">GitHub</a><a href="https://www.npmjs.com/package/wallet-evidence">npm</a></div>
+    </div>
+
+    <div class="card">
+      <h2>crosschain-incident <span class="badge b-mvp">offline formatter · seed</span></h2>
+      <p>Normalizes operator-supplied cross-chain message status JSON (source/destination/delivered/failed) into a conservative evidence report. Missing fields stay UNKNOWN. Protocol APIs are the roadmap.</p>
+      <div class="cmd">npx crosschain-incident inspect --input ./message.json --json</div>
+      <div class="links"><a href="https://github.com/xka0085-byte/crosschain-incident">GitHub</a><a href="https://www.npmjs.com/package/crosschain-incident">npm</a></div>
+    </div>
+
+    <div class="card">
+      <h2>ReceiptRail <span class="badge b-verified">live service</span></h2>
+      <p>On-chain delivery receipts for x402 on Solana: payment → delivery → SHA-256 digest anchored to a public PDA → anyone can verify independently. The evidence adapter beneath this suite.</p>
+      <div class="cmd">npx receiptrail-mcp &nbsp;# MCP endpoint: https://agenttoll-receipts.app.workbuddy.host/mcp</div>
+      <div class="links"><a href="https://agenttoll-receipts.app.workbuddy.host/">Live service</a><a href="https://github.com/xka0085-byte/agenttoll">GitHub</a><a href="https://glama.ai/mcp/servers/xka0085-byte/agenttoll">Glama</a></div>
+    </div>
+  </div>
+
+  <footer>
+    Built by <a href="https://github.com/xka0085-byte">xka0085-byte (Eidon)</a> · All tools MIT licensed ·
+    Status labels reflect what is actually verified, not aspirations. "MVP" means runnable and tested locally + at least one real public validation where marked; it does not mean production-grade.
+  </footer>
+</div>
+</body>
+</html>

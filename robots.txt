@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://agenttoll-evidence-tools.app.workbuddy.host/sitemap.xml
