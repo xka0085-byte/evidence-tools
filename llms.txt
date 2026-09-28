@@ -1,0 +1,17 @@
+# Agent / Chain Evidence Tools
+
+> Read-only, no-keys, no-payments diagnostics CLIs for AI agents operating on Web3. Every tool returns PASS / FAIL / UNKNOWN with JSON output and fully documented limits. No credentials required, no on-chain transactions, no payments.
+
+## MCP & Agent Tooling
+- [mcp-doctor](https://github.com/xka0085-byte/mcp-doctor): Read-only MCP server discovery & diagnostics — detect misconfigured or malicious MCP servers before an agent connects. npm: @eidonze/mcpdoctor.
+- [oauthdoctor](https://github.com/xka0085-byte/oauthdoctor): Read-only OAuth/OAuth2 diagnostics for MCP servers and AI agents — insecure flows, missing PKCE, token leaks.
+- [ReceiptRail (agenttoll)](https://github.com/xka0085-byte/agenttoll): On-chain delivery receipts for AI agent payments (x402 / stablecoin) — verifiable proof a paid task was performed.
+
+## Web3 Diagnostics
+- [x402-reconcile](https://github.com/xka0085-byte/x402-reconcile): Read-only x402 payment & stablecoin challenge reconciliation — verify payment requirements without paying.
+- [wallet-evidence](https://github.com/xka0085-byte/wallet-evidence): Read-only Solana & EVM wallet/transaction evidence — verify on-chain facts, no keys, no signing.
+- [crosschain-incident](https://github.com/xka0085-byte/crosschain-incident): Read-only cross-chain incident diagnostics — trace bridges, replay attacks, anomalous transfers.
+
+## Resources
+- [Suite hub](https://xka0085-byte.github.io/evidence-tools/): Unified entry point and cross-links for the whole suite.
+- [Write-up on dev.to](https://dev.to/eidon_ze_598ff4e987ed54d2/five-read-only-diagnostic-clis-for-ai-agents-on-web3-x402-mcp-solana-31l4): "Five read-only diagnostic CLIs for AI agents on Web3".
