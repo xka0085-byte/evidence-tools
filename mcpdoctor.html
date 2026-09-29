@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>mcpdoctor — CLI for inspecting MCP &amp; x402 endpoints</title>
+<meta name="description" content="mcpdoctor is a read-only command-line inspector for MCP (Model Context Protocol) and x402 payment endpoints: parses the HTTP 402 payment document (v1/v2 accepts[]), checks /.well-known/mcp and /.well-known/x402 discovery manifests, and returns a response SHA-256 digest. One `inspect` command, PASS/FAIL/UNKNOWN, JSON output. Not an MCP server — a developer CLI for preflight and debugging AI-agent payment endpoints.">
+<link rel="canonical" href="https://xka0085-byte.github.io/evidence-tools/mcpdoctor.html">
+<meta property="og:title" content="mcpdoctor — CLI for inspecting MCP & x402 endpoints">
+<meta property="og:description" content="Read-only MCP endpoint inspector: 402 payment document parsing, discovery manifest checks, response SHA-256. One command, JSON output.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://xka0085-byte.github.io/evidence-tools/mcpdoctor.html">
+<meta name="robots" content="index,follow">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "mcpdoctor",
+  "alternateName": ["MCP endpoint inspector", "mcp-doctor", "@eidonze/mcpdoctor"],
+  "description": "Read-only CLI for inspecting MCP (Model Context Protocol) and x402 payment endpoints: parses the HTTP 402 payment document, checks /.well-known/mcp/server.json and /.well-known/x402 discovery manifests, returns a response SHA-256 digest. Not an MCP server; a developer preflight and debugging tool.",
+  "applicationCategory": "DeveloperApplication",
+  "operatingSystem": "Node.js >= 18 (CLI)",
+  "softwareVersion": "0.1.2",
+  "license": "https://opensource.org/licenses/MIT",
+  "author": { "@type": "Person", "name": "Eidon", "url": "https://github.com/xka0085-byte" },
+  "downloadUrl": "https://www.npmjs.com/package/@eidonze/mcpdoctor",
+  "installUrl": "https://www.npmjs.com/package/@eidonze/mcpdoctor",
+  "codeRepository": "https://github.com/xka0085-byte/mcp-doctor",
+  "featureList": [
+    "inspect a single MCP or x402 endpoint with one command",
+    "parse HTTP 402 payment documents (x402 v1 accepts[] and v2 x402.accepts)",
+    "verify /.well-known/mcp/server.json and /.well-known/x402 discovery manifests",
+    "response SHA-256 digest, latency and size",
+    "PASS / FAIL / UNKNOWN output, JSON or markdown"
+  ]
+}
+</script>
+<style>
+  :root { --bg:#0d1117; --card:#161b22; --border:#30363d; --text:#e6edf3; --dim:#8b949e; --green:#3fb950; --yellow:#d29922; --blue:#58a6ff; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font: 16px/1.6 -apple-system, "Segoe UI", Roboto, sans-serif; padding: 48px 20px; }
+  .wrap { max-width: 860px; margin: 0 auto; }
+  h1 { font-size: 28px; margin-bottom: 8px; }
+  h2 { font-size: 19px; margin: 28px 0 8px; color: var(--blue); }
+  p, li { margin-bottom: 8px; }
+  .sub { color: var(--dim); font-size: 17px; margin-bottom: 24px; }
+  code { background: var(--card); border: 1px solid var(--border); border-radius: 4px; padding: 1px 6px; font-size: 14px; color: var(--green); }
+  pre { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 14px 16px; overflow-x: auto; margin: 12px 0 20px; }
+  pre code { border: none; background: none; padding: 0; }
+  table { border-collapse: collapse; margin: 12px 0 20px; width: 100%; }
+  td, th { border: 1px solid var(--border); padding: 6px 12px; font-size: 14.5px; text-align: left; }
+  .links { margin: 26px 0; }
+  .links a { color: var(--blue); text-decoration: none; margin-right: 18px; }
+  .links a:hover { text-decoration: underline; }
+  .note { color: var(--dim); font-size: 13.5px; }
+  ul { padding-left: 22px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>mcpdoctor</h1>
+  <p class="sub">A read-only <strong>command-line inspector for MCP and x402 endpoints</strong>. One <code>inspect</code> command. <code>PASS / FAIL / UNKNOWN</code>. JSON output. Not an MCP server — a developer tool.</p>
+
+  <h2>What it checks</h2>
+  <ul>
+    <li><strong>HTTP 402 payment document</strong> — parsed from <code>Payment-Required</code> / <code>X-Payment-Required</code> / <code>WWW-Authenticate</code> headers or the response body, in x402 v1 (<code>accepts[]</code>) and v2 (<code>x402.accepts</code>) shapes; every <code>scheme / network / asset / amount / payTo</code> field verified.</li>
+    <li><strong>Discovery manifests</strong> — reachability of <code>/.well-known/mcp/server.json</code> and <code>/.well-known/x402</code>, each with a SHA-256.</li>
+    <li><strong>Response evidence</strong> — SHA-256 digest of the body, latency, size.</li>
+  </ul>
+
+  <h2>Install &amp; run</h2>
+  <pre><code>npm install -g @eidonze/mcpdoctor     # or: npx @eidonze/mcpdoctor inspect &lt;url&gt;
+mcpdoctor inspect https://your-endpoint/mcp --method=POST --json</code></pre>
+
+  <h2>Example report (captured against a live endpoint, 2026-09-29)</h2>
+  <pre><code>{
+  "endpoint": "https://agenttoll-receipts.app.workbuddy.host/mcp",
+  "method": "POST",
+  "finalStatus": "FAIL",
+  "http": { "status": 200, "elapsedMs": 2830,
+            "bodySha256": "598dc097dcca…fec6b4f4" },
+  "findings": [
+    { "status": "FAIL", "code": "NO_402",
+      "message": "Expected HTTP 402, received 200" } ],
+  "metadata": [
+    { "path": "/.well-known/mcp/server.json", "status": 200, "reachable": true } ]
+}</code></pre>
+  <p class="note">FAIL here is correct: this MCP endpoint is free, so it answers 200 instead of a 402. The report still verifies its discovery manifest and records a tamper-evident digest.</p>
+
+  <h2>What it is not</h2>
+  <ul>
+    <li><strong>Not an MCP server.</strong> mcpdoctor does not implement the MCP protocol — it inspects what an endpoint advertises.</li>
+    <li>No MCP session: no <code>initialize</code>, no <code>tools/list</code>. No wallet, signing, or payments. Read-only preflight only.</li>
+    <li><code>PASS</code> means the observed 402 document had recognizable, complete fields — not a security certification.</li>
+  </ul>
+
+  <h2>Why</h2>
+  <p>Every check maps to a failure mode we hit shipping <a href="https://github.com/xka0085-byte/agenttoll" style="color:var(--blue)">ReceiptRail</a>, an x402-paid service: 402 challenges sent only after body validation, payment documents in four places and two shapes, vendor hint headers shadowing the real document.</p>
+
+  <div class="links">
+    <a href="https://github.com/xka0085-byte/mcp-doctor">GitHub</a>
+    <a href="https://www.npmjs.com/package/@eidonze/mcpdoctor">npm</a>
+    <a href="https://smithery.ai/servers/xka0085/mcpdoctor">Smithery</a>
+    <a href="https://xka0085-byte.github.io/evidence-tools/">← All tools</a>
+  </div>
+  <p class="note">Part of the Agent / Chain Evidence Tools suite · MIT · Node ≥ 18 · zero dependencies</p>
+</div>
+</body>
+</html>
