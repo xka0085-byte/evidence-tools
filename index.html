@@ -63,10 +63,10 @@
 
   <div class="grid">
     <div class="card">
-      <h2>mcpdoctor <span class="badge b-verified">MCP conformance: core verified</span></h2>
-      <p>Is your MCP/x402 endpoint discoverable and understandable by an agent? Checks HTTP 402 payment documents, MCP initialize, tools/list, tool name / description / inputSchema / required fields.</p>
+      <h2>mcpdoctor <span class="badge b-verified">MCP/x402 endpoint inspector · CLI</span></h2>
+      <p>Is your paid endpoint advertising itself the way agents expect? One <code>inspect</code> command parses the HTTP 402 payment document (v1/v2 accepts[]), checks the /.well-known/mcp and /.well-known/x402 discovery manifests, and returns a response SHA-256. Read-only, not an MCP server.</p>
       <div class="cmd">npx @eidonze/mcpdoctor inspect https://your-endpoint/mcp --json</div>
-      <div class="links"><a href="https://github.com/xka0085-byte/mcp-doctor">GitHub</a><a href="https://www.npmjs.com/package/@eidonze/mcpdoctor">npm</a><a href="https://smithery.ai/servers/xka0085/mcpdoctor">Smithery listing</a></div>
+      <div class="links"><a href="mcpdoctor.html">Docs</a><a href="https://github.com/xka0085-byte/mcp-doctor">GitHub</a><a href="https://www.npmjs.com/package/@eidonze/mcpdoctor">npm</a><a href="https://smithery.ai/servers/xka0085/mcpdoctor">Smithery listing</a></div>
     </div>
 
     <div class="card">
