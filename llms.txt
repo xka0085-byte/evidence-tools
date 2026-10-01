@@ -3,14 +3,14 @@
 > Read-only, no-keys, no-payments diagnostics CLIs for AI agents operating on Web3. Every tool returns PASS / FAIL / UNKNOWN with JSON output and fully documented limits. No credentials required, no on-chain transactions, no payments.
 
 ## MCP & Agent Tooling
-- [mcp-doctor](https://github.com/xka0085-byte/mcp-doctor): Read-only MCP server discovery & diagnostics — detect misconfigured or malicious MCP servers before an agent connects. npm: @eidonze/mcpdoctor.
-- [oauthdoctor](https://github.com/xka0085-byte/oauthdoctor): Read-only OAuth/OAuth2 diagnostics for MCP servers and AI agents — insecure flows, missing PKCE, token leaks.
+- [mcp-doctor](https://github.com/xka0085-byte/mcp-doctor): Read-only inspector for MCP & x402 endpoints — parses the HTTP 402 payment document (v1/v2 accepts[]) and checks /.well-known/mcp and /.well-known/x402 discovery manifests. Not an MCP server. npm: @eidonze/mcpdoctor.
+- [oauthdoctor](https://github.com/xka0085-byte/oauthdoctor): Read-only OAuth/OAuth2 discovery diagnostics for MCP servers and AI agents — walks the 401 challenge, WWW-Authenticate resource_metadata, Protected Resource Metadata, authorization server metadata, and PKCE S256 declaration.
 - [ReceiptRail (agenttoll)](https://github.com/xka0085-byte/agenttoll): On-chain delivery receipts for AI agent payments (x402 / stablecoin) — verifiable proof a paid task was performed.
 
 ## Web3 Diagnostics
 - [x402-reconcile](https://github.com/xka0085-byte/x402-reconcile): Read-only x402 payment & stablecoin challenge reconciliation — verify payment requirements without paying.
-- [wallet-evidence](https://github.com/xka0085-byte/wallet-evidence): Read-only Solana & EVM wallet/transaction evidence — verify on-chain facts, no keys, no signing.
-- [crosschain-incident](https://github.com/xka0085-byte/crosschain-incident): Read-only cross-chain incident diagnostics — trace bridges, replay attacks, anomalous transfers.
+- [wallet-evidence](https://github.com/xka0085-byte/wallet-evidence): Read-only Solana transaction evidence — verify on-chain facts from one RPC, no keys, no signing.
+- [crosschain-incident](https://github.com/xka0085-byte/crosschain-incident): Read-only cross-chain incident normalization — takes operator-supplied source/destination status JSON and produces a conservative evidence report. Offline formatter, not a live tracer.
 
 ## Resources
 - [Suite hub](https://xka0085-byte.github.io/evidence-tools/): Unified entry point and cross-links for the whole suite.
